@@ -76,45 +76,85 @@
         section {
             background: var(--card-bg);
             border-radius: var(--radius);
-            padding: 30px;
-            margin-bottom: 30px;
+            padding: 36px;               /* ⬅️ dari 30px */
+            margin-bottom: 50px;         /* ⬅️ dari 30px */
             box-shadow: var(--shadow);
             border-bottom: 4px solid var(--primary);
             position: relative;
             transition: transform 0.2s;
         }
-        section:hover { transform: translateY(-2px); }
+     
+        section h2 {
+            margin-bottom: 22px;
+        }
+        section h2::after {
+            content: "";
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 999px;
+            margin-top: 10px;
+        }
+
+        section:not(:last-of-type)::after {
+            content: "";
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #c7d2fe, transparent);
+        }
+
+        section:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(30, 64, 175, 0.12);
+        }
+
         
         h2 { font-size: 1.4rem; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; color: var(--primary-dark); }
         
         .section-illu {
             width: 100%;
-            height: 120px;
+            height: 140px;               /* ⬅️ sedikit lebih tinggi */
             object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 15px;
+            border-radius: 12px;
+            margin-bottom: 22px;         /* ⬅️ dari 15px */
             opacity: 0.9;
         }
 
+
         .copywriting {
             font-size: 0.95rem;
-            background: #ecfdf5;
+            background: linear-gradient(135deg, #ecfdf5, #f0fdfa);
             color: #065f46;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 20px;
+            padding: 18px 20px;          /* ⬅️ lebih lega */
+            border-radius: 14px;
+            margin-bottom: 26px;         /* ⬅️ jarak ke input */
             font-style: italic;
-            border-left: 4px solid var(--primary);
+            border-left: 5px solid var(--primary);
+            line-height: 1.7;
         }
+
 
         /* --- 4. FORM ELEMENTS --- */
         .input-wrapper {
             background: #f9fafb;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 20px;
+            padding: 18px;
+            border-radius: 14px;
+            margin-bottom: 20px;     /* ⬅️ dari 15px */
             border: 1px solid #e5e7eb;
         }
+        #transport-list,
+        #food-list,
+        #energy-list {
+            display: grid;
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
         
         label { display: block; font-weight: 700; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-main); }
         .helper-text { font-size: 0.8rem; color: #6b7280; display: block; margin-top: -5px; margin-bottom: 10px; }
@@ -139,9 +179,22 @@
         .val-display { font-weight: 800; color: var(--primary-dark); min-width: 50px; text-align: right; }
 
         /* --- 6. ACTION BUTTON --- */
-        .identity-box { background: #111827; color: white; border-bottom: 4px solid var(--accent); }
-        .identity-box h2 { color: white; }
-        .identity-box input { background: #374151; border: 1px solid #4b5563; color: white; }
+        .identity-box {
+            background: linear-gradient(135deg, #f8fafc, #eef2ff);
+            color: var(--text-main);
+            border-bottom: 4px solid var(--primary);
+        }
+        
+        .identity-box h2 {
+            color: var(--primary-dark);
+        }
+        
+        .identity-box input {
+            background: white;
+            border: 1px solid #d1d5db;
+            color: var(--text-main);
+        }
+
         
         .btn-calculate {
             background: var(--primary); color: white; border: none; width: 100%; padding: 20px; font-size: 1.3rem; font-weight: 800; border-radius: 12px; cursor: pointer; margin-top: 15px; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4); transition: transform 0.2s;
@@ -833,4 +886,5 @@
 </body>
 
 </html>
+
 
