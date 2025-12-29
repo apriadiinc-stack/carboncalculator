@@ -59,11 +59,12 @@
         }
         header p { color: var(--text-light); font-size: 1.1rem; }
         
-        ..hero-img {
+        .hero-img {
             width: 100%;
-            height: auto;
-            max-height: 400px; /* opsional, supaya tidak terlalu tinggi */
-            object-fit: contain;
+            height: calc(100% * 9 / 16); /* atau height otomatis sesuai container */
+            object-fit: contain; /* biar semua gambar terlihat, mungkin ada space kosong */
+}
+
 }
 
         }
@@ -829,4 +830,5 @@
 </body>
 
 </html>
+
 
