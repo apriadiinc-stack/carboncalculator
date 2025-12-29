@@ -213,6 +213,21 @@
             background: var(--primary); color: white; border: none; width: 100%; padding: 20px; font-size: 1.3rem; font-weight: 800; border-radius: 12px; cursor: pointer; margin-top: 15px; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4); transition: transform 0.2s;
         }
         .btn-calculate:hover { transform: translateY(-3px); background: var(--primary-dark); }
+        .question-card {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 28px;
+        }
+        
+        .question-card .btn-add {
+            margin-top: 16px;
+        }
+        
+        .question-card .input-wrapper:last-child {
+            margin-bottom: 0;
+        }
 
         /* --- 7. RESULT & CHART --- */
         #result-section { display: none; margin-top: 40px; animation: fadeInUp 0.8s ease; }
@@ -356,8 +371,13 @@
                 “Yuk jujur, tadi sampai sini pakai kendaraan apa? Tenang, gak ada polisi kok di sini, cuma ada emisi yang perlu dihitung😁.”
             </div>
             
-            <div id="transport-list"></div>
-            <button type="button" class="btn-add" onclick="addTransport()">+ Tambah Kendaraan</button>
+            <div class="question-card">
+                <div id="food-list"></div>
+                <button type="button" class="btn-add" onclick="addFood()">
+                    + Tambah Asupan
+                </button>
+            </div>
+
         </section>
 
         <section>
@@ -367,8 +387,13 @@
             <div class="copywriting">
                 “Daging sapi emang enak, tapi emisinya juara satu. Kamu tim makan apa hari ini?”
             </div>
-            <div id="food-list"></div>
-            <button type="button" class="btn-add" onclick="addFood()">+ Tambah Asupan</button>
+            <div class="question-card">
+                <div id="food-list"></div>
+                <button type="button" class="btn-add" onclick="addFood()">
+                    + Tambah Asupan
+                </button>
+            </div>
+
         </section>
 
         <section>
@@ -378,8 +403,13 @@
             <div class="copywriting">
                 “Gadget nyala terus, AC dingin banget... Meteran listrik jalan, emisi PLTU juga ngebul lho.”
             </div>
-            <div id="energy-list"></div>
-            <button type="button" class="btn-add" onclick="addEnergy()">+ Tambah Gadget</button>
+            <div class="question-card">
+                <div id="energy-list"></div>
+                <button type="button" class="btn-add" onclick="addEnergy()">
+                    + Tambah Gadget
+                </button>
+            </div>
+
         </section>
 
         <section>
@@ -911,6 +941,7 @@
 </body>
 
 </html>
+
 
 
 
