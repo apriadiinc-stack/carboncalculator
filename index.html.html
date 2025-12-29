@@ -61,11 +61,15 @@
         
         .hero-img {
             width: 100%;
-            height: 250px;
-            object-fit: cover;
+            height: calc(100% * 9 / 16); /* atau height otomatis sesuai container */
+            object-fit: contain; /* biar semua gambar terlihat, mungkin ada space kosong */
             border-radius: var(--radius);
             margin-top: 20px;
             box-shadow: var(--shadow);
+}
+
+}
+
         }
 
         /* --- 3. SECTIONS GENERAL --- */
@@ -108,7 +112,7 @@
             background: #f9fafb;
             padding: 15px;
             border-radius: 12px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             border: 1px solid #e5e7eb;
         }
         
@@ -135,22 +139,10 @@
         .val-display { font-weight: 800; color: var(--primary-dark); min-width: 50px; text-align: right; }
 
         /* --- 6. ACTION BUTTON --- */
-       .identity-box {
-            background: linear-gradient(135deg, #f8fafc, #eef2ff);
-            color: var(--text-main);
-            border-bottom: 4px solid var(--primary);
-        }
+        .identity-box { background: #111827; color: white; border-bottom: 4px solid var(--accent); }
+        .identity-box h2 { color: white; }
+        .identity-box input { background: #374151; border: 1px solid #4b5563; color: white; }
         
-        .identity-box h2 {
-            color: var(--primary-dark);
-        }
-        
-        .identity-box input {
-            background: white;
-            border: 1px solid #d1d5db;
-            color: var(--text-main);
-        }
-
         .btn-calculate {
             background: var(--primary); color: white; border: none; width: 100%; padding: 20px; font-size: 1.3rem; font-weight: 800; border-radius: 12px; cursor: pointer; margin-top: 15px; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4); transition: transform 0.2s;
         }
@@ -168,7 +160,7 @@
         .comp-row { margin-bottom: 20px; display: block; }
         .comp-label { font-weight: 700; font-size: 0.95rem; color: #555; margin-bottom: 8px; display: block; }
         .comp-bar-area { width: 100%; height: 20px; background: #e5e7eb; border-radius: 10px; position: relative; overflow: hidden; margin-bottom: 6px; }
-        .comp-bar { height: 100%; border-radius: 10px; transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        .comp-bar { height: 100%; border-radius: 10px; transition: width 1s ease; }
         .comp-value { font-size: 0.9rem; font-weight: 600; color: var(--text-light); }
         
         .bar-user { background: #f59e0b; } 
@@ -363,7 +355,7 @@
         </section>
 
         <section class="identity-box">
-            <h2>👤 Eh kenalan dulu dong!</h2>
+            <h2>👤 Eh sebelum lanjut, kenalan dulu dong!</h2>
             <div style="margin: 20px 0;">
                 <label style="color:#d1d5db;">Nama Panggilan Kerenmu</label>
                 <input type="text" id="userName" placeholder="Ketik nama biar masuk podium..." required>
@@ -378,10 +370,7 @@
         <section class="result-highlight">
             <h2>📊 Rapor Emisi Kamu</h2>
             <p style="color: #666; margin-bottom: 10px;">Total Jejak Karbon Hari Ini:</p>
-            <div class="emission-big">
-                <span id="totalDaily" data-target="0">0</span> 
-                <span style="font-size:1.5rem">kg</span>
-            </div>
+            <div class="emission-big"><span id="totalDaily">0</span> <span style="font-size:1.5rem">kg</span></div>
             
             <div style="background: #ecfdf5; display:inline-block; padding: 10px 20px; border-radius: 50px; margin: 15px 0; color: var(--primary-dark); font-weight:bold;">
                 🌳 Jika kamu mengeluarkan emisi sebanyak itu selama setahun, maka kamu harus menanam <span id="treeCount">0</span> pohon/tahun
@@ -407,7 +396,7 @@
                 <div class="comp-row">
                     <div class="comp-label">Indonesia 🇮🇩</div>
                     <div class="comp-bar-area">
-                        <div class="comp-bar bar-indo" data-width="36%"></div>
+                        <div class="comp-bar bar-indo" style="width:36%"></div>
                     </div>
                     <div class="comp-value">3.6 tonCO₂e/tahun/kapita</div>
                 </div>
@@ -415,7 +404,7 @@
                 <div class="comp-row">
                     <div class="comp-label">ASEAN 🌏</div>
                     <div class="comp-bar-area">
-                        <div class="comp-bar bar-ASEAN" data-width="78%"></div>
+                        <div class="comp-bar bar-ASEAN" style="width:78%"></div>
                     </div>
                     <div class="comp-value">7.8 tonCO₂e/tahun/kapita</div>
                 </div>
@@ -423,7 +412,7 @@
                 <div class="comp-row">
                     <div class="comp-label">Global 🌍</div>
                     <div class="comp-bar-area">
-                        <div class="comp-bar bar-global" data-width="63%"></div>
+                        <div class="comp-bar bar-global" style="width:63%"></div>
                     </div>
                     <div class="comp-value">6.3 tonCO₂e/tahun/kapita</div>
                 </div>
@@ -673,22 +662,6 @@
         addEnergy(); 
         loadLeaderboard(); 
     };
-    function animateCount(id, target) {
-        const el = document.getElementById(id);
-        const start = 0;
-        const end = parseFloat(target);
-        const duration = 1000;
-        const startTime = performance.now();
-    
-        function update(now) {
-            const progress = Math.min((now - startTime) / duration, 1);
-            const value = start + progress * (end - start);
-            el.innerText = value.toFixed(2);
-            if (progress < 1) requestAnimationFrame(update);
-        }
-    
-        requestAnimationFrame(update);
-    }
 
     /* --- 3. CALCULATION --- */
     function calculate() {
@@ -742,7 +715,7 @@
         const treesNeeded = Math.ceil((dailyTotal * 365) / 20);
 
         // UI Updates
-        animateCount('totalDaily', dailyFinal);
+        document.getElementById('totalDaily').innerText = dailyFinal;
         document.getElementById('treeCount').innerText = treesNeeded;
         document.getElementById('totalYearly').innerText = yearlyTon;
 
@@ -750,7 +723,7 @@
         document.getElementById('costIfm').innerText = (yearlyTon * 16).toFixed(2);
         document.getElementById('costArr').innerText = (yearlyTon * 24).toFixed(2);
 
-        updateComparison(yearlyTon);setTimeout(animateBars, 300);
+        updateComparison(yearlyTon);
 
         document.getElementById('result-section').style.display = 'block';
         document.getElementById('result-section').scrollIntoView({behavior:'smooth'});
@@ -795,12 +768,6 @@
             localStorage.setItem('carbonDB_v2', JSON.stringify(db));
         }
         renderLeaderboard();
-    function animateBars() {
-        document.querySelectorAll('.comp-bar[data-width]').forEach(bar => {
-            bar.style.width = bar.dataset.width;
-        });
-    }
-
 
     function renderLeaderboard() {
         let db = JSON.parse(localStorage.getItem('carbonDB_v2')) || [];
@@ -866,3 +833,4 @@
 </body>
 
 </html>
+
