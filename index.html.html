@@ -76,77 +76,46 @@
         section {
             background: var(--card-bg);
             border-radius: var(--radius);
-            padding: 36px;               /* ⬅️ dari 30px */
-            margin-bottom: 50px;         /* ⬅️ dari 30px */
+            padding: 30px;
+            margin-bottom: 30px;
             box-shadow: var(--shadow);
             border-bottom: 4px solid var(--primary);
             position: relative;
             transition: transform 0.2s;
         }
-     
-        section h2 {
-            margin-bottom: 22px;
-        }
-        section h2::after {
-            content: "";
-            display: block;
-            width: 60px;
-            height: 4px;
-            background: var(--accent);
-            border-radius: 999px;
-            margin-top: 10px;
-        }
-
-        section:not(:last-of-type)::after {
-            content: "";
-            position: absolute;
-            bottom: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80%;
-            height: 1px;
-            background: linear-gradient(to right, transparent, #c7d2fe, transparent);
-        }
-
-        section:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 32px rgba(30, 64, 175, 0.12);
-        }
-
+        section:hover { transform: translateY(-2px); }
         
         h2 { font-size: 1.4rem; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; color: var(--primary-dark); }
         
         .section-illu {
             width: 100%;
-            height: 140px;               /* ⬅️ sedikit lebih tinggi */
+            height: 120px;
             object-fit: cover;
-            border-radius: 12px;
-            margin-bottom: 22px;         /* ⬅️ dari 15px */
+            border-radius: 8px;
+            margin-bottom: 15px;
             opacity: 0.9;
         }
 
-
         .copywriting {
             font-size: 0.95rem;
-            background: linear-gradient(135deg, #ecfdf5, #f0fdfa);
+            background: #ecfdf5;
             color: #065f46;
-            padding: 18px 20px;          /* ⬅️ lebih lega */
-            border-radius: 14px;
-            margin-bottom: 26px;         /* ⬅️ jarak ke input */
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
             font-style: italic;
-            border-left: 5px solid var(--primary);
-            line-height: 1.7;
+            border-left: 4px solid var(--primary);
         }
-
 
         /* --- 4. FORM ELEMENTS --- */
         .input-wrapper {
             background: #f9fafb;
-            padding: 18px;
-            border-radius: 14px;
-            margin-bottom: 20px;     /* ⬅️ dari 15px */
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
             border: 1px solid #e5e7eb;
         }
+        
         #transport-list,
         #food-list,
         #energy-list {
@@ -886,5 +855,6 @@
 </body>
 
 </html>
+
 
 
