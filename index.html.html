@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayo Hitung Jejak Emisi Kamu! 🌍</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 1. SETUP & VARIABLES --- */
+:root {
+    /* === BLUE THEME === */
+    --primary: #3b82f6;        /* Blue 500 */
+    --primary-dark: #1e40af;   /* Blue 800 */
+    --accent: #60a5fa;         /* Blue soft accent */
+
+    --text-main: #0f172a;
+    --text-light: #475569;
+
+    --bg-body: #eff6ff;        /* Biru sangat muda (background luar) */
+    --card-bg: #ffffff;        /* Card tetap putih biar clean */
+
+    --radius: 16px;
+    --shadow: 0 6px 24px rgba(30, 64, 175, 0.08);
+            
+            /* Podium Colors */
+            --gold: #FFD700;
+            --silver: #C0C0C0;
+            --bronze: #CD7F32;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-bottom: 80px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* --- 2. HEADER & HERO --- */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-top: 20px;
+        }
+        header h1 {
+            font-size: 2.2rem;
+            color: var(--primary-dark);
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        header p { color: var(--text-light); font-size: 1.1rem; }
+        
+        .hero-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: var(--radius);
+            margin-top: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        /* --- 3. SECTIONS GENERAL --- */
+        section {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            border-bottom: 4px solid var(--primary);
+            position: relative;
+            transition: transform 0.2s;
+        }
+        section:hover { transform: translateY(-2px); }
+        
+        h2 { font-size: 1.4rem; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; color: var(--primary-dark); }
+        
+        .section-illu {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .copywriting {
+            font-size: 0.95rem;
+            background: #ecfdf5;
+            color: #065f46;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-style: italic;
+            border-left: 4px solid var(--primary);
+        }
+
+        /* --- 4. FORM ELEMENTS --- */
+        .input-wrapper {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #e5e7eb;
+        }
+        
+        label { display: block; font-weight: 700; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-main); }
+        .helper-text { font-size: 0.8rem; color: #6b7280; display: block; margin-top: -5px; margin-bottom: 10px; }
+        
+        select, input[type="number"], input[type="text"] {
+            width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-family: inherit; margin-bottom: 5px; outline: none; background: white;
+        }
+        select:focus, input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2); }
+
+        .btn-add {
+            background: white; color: var(--primary); border: 2px dashed #d1d5db; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: 600; width: 100%; transition: 0.2s;
+        }
+        .btn-add:hover { border-color: var(--primary); background: #ecfdf5; }
+
+        .btn-remove {
+            background: #fee2e2; color: #991b1b; border: none; padding: 5px 12px; border-radius: 6px; font-size: 0.75rem; float: right; cursor: pointer; font-weight: bold;
+        }
+
+        /* --- 5. SLIDER --- */
+        .slider-container { display: flex; align-items: center; gap: 15px; background: white; padding: 10px; border-radius: 8px; border: 1px solid #eee; }
+        input[type="range"] { flex-grow: 1; cursor: pointer; accent-color: var(--primary); }
+        .val-display { font-weight: 800; color: var(--primary-dark); min-width: 50px; text-align: right; }
+
+        /* --- 6. ACTION BUTTON --- */
+        .identity-box { background: #111827; color: white; border-bottom: 4px solid var(--accent); }
+        .identity-box h2 { color: white; }
+        .identity-box input { background: #374151; border: 1px solid #4b5563; color: white; }
+        
+        .btn-calculate {
+            background: var(--primary); color: white; border: none; width: 100%; padding: 20px; font-size: 1.3rem; font-weight: 800; border-radius: 12px; cursor: pointer; margin-top: 15px; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4); transition: transform 0.2s;
+        }
+        .btn-calculate:hover { transform: translateY(-3px); background: var(--primary-dark); }
+
+        /* --- 7. RESULT & CHART --- */
+        #result-section { display: none; margin-top: 40px; animation: fadeInUp 0.8s ease; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .result-highlight { text-align: center; margin-bottom: 30px; }
+        .emission-big { font-size: 4rem; font-weight: 800; color: var(--text-main); line-height: 1; letter-spacing: -2px; }
+        
+        /* BAR CHART STYLE */
+        .comparison-container { margin-top: 20px; }
+        .comp-row { margin-bottom: 20px; display: block; }
+        .comp-label { font-weight: 700; font-size: 0.95rem; color: #555; margin-bottom: 8px; display: block; }
+        .comp-bar-area { width: 100%; height: 20px; background: #e5e7eb; border-radius: 10px; position: relative; overflow: hidden; margin-bottom: 6px; }
+        .comp-bar { height: 100%; border-radius: 10px; transition: width 1s ease; }
+        .comp-value { font-size: 0.9rem; font-weight: 600; color: var(--text-light); }
+        
+        .bar-user { background: #f59e0b; } 
+        .bar-indo { background: #ef4444; } 
+        .bar-ASEAN { background: #3b82f6; } 
+        .bar-global { background: #6b7280; }
+
+        .data-source { font-size: 0.8rem; margin-top: 20px; color: #9ca3af; text-align: right; }
+
+        /* --- 8. EDUCATION CARDS (NEW LAYOUT) --- */
+        .edu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 20px; }
+        .edu-card { border-radius: 14px; padding: 1.1rem; box-shadow: 0 6px 14px rgba(0,0,0,0.06); transition: transform 0.2s ease; background: #fff; }
+        .edu-card:hover { transform: translateY(-3px); }
+        .edu-card h4 { font-size: 1.1rem; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .edu-desc { font-size: 0.85rem; color: #555; margin-bottom: 0.7rem; }
+        .edu-badge { font-size: 0.7rem; padding: 0.25em 0.6em; border-radius: 999px; font-weight: 600; color: #fff; }
+        
+        /* Buttons Group */
+        .edu-btns { display: flex; gap: 8px; margin-top: 15px; }
+        .btn-edu-toggle {
+            flex: 1;
+            padding: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            background: white;
+            transition: 0.2s;
+        }
+        
+        /* Pros Button */
+        .btn-pros { border-color: #10b981; color: #047857; }
+        .btn-pros:hover { background: #ecfdf5; }
+        
+        /* Cons Button */
+        .btn-cons { border-color: #ef4444; color: #b91c1c; }
+        .btn-cons:hover { background: #fef2f2; }
+
+        /* Content Boxes */
+        .edu-content {
+            display: none; /* Hidden by default */
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .content-pros { background: #f0fdf4; border: 1px solid #bbf7d0; color: #14532d; }
+        .content-cons { background: #fef2f2; border: 1px solid #fecaca; color: #7f1d1d; }
+        
+        .edu-content ul { margin: 0.3rem 0 0 1.2rem; padding: 0; }
+        .edu-content li { margin-bottom: 0.4rem; line-height: 1.4; }
+
+        /* Card Variants */
+        .edu-card.redd { background: linear-gradient(135deg, #ffe5e5, #fff5f5); border-left: 6px solid #e53935; }
+        .edu-card.redd .edu-badge { background: #e53935; }
+        
+        .edu-card.ifm { background: linear-gradient(135deg, #e3f2fd, #f5fbff); border-left: 6px solid #1e88e5; }
+        .edu-card.ifm .edu-badge { background: #1e88e5; }
+        
+        .edu-card.arr { background: linear-gradient(135deg, #e8f5e9, #f6fff7); border-left: 6px solid #43a047; }
+        .edu-card.arr .edu-badge { background: #43a047; }
+
+        /* --- 9. MARKETPLACE --- */
+        .market-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-top: 20px; }
+        .product-card { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; position: relative; transition: 0.3s; }
+        .product-card:hover { border-color: var(--primary); box-shadow: 0 10px 30px rgba(0,0,0,0.1); transform: translateY(-5px); }
+        .price-display { font-size: 1.8rem; font-weight: 800; color: var(--text-main); margin: 10px 0; }
+        .btn-buy { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 15px; color: white; }
+        .bg-redd { background: #f59e0b; }
+        .bg-ifm { background: #3b82f6; }
+        .bg-arr { background: #10b981; }
+
+        /* --- 10. LEADERBOARD --- */
+        .podium-container { display: flex; justify-content: center; align-items: flex-end; gap: 15px; height: 220px; margin-bottom: 30px; padding-bottom: 20px; }
+        .podium-item { display: flex; flex-direction: column; align-items: center; width: 30%; text-align: center; }
+        .podium-block { width: 100%; border-radius: 12px 12px 0 0; color: white; font-weight: bold; padding: 10px; display: flex; flex-direction: column; justify-content: flex-end; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        
+        .p-1 { height: 140px; background: linear-gradient(to bottom, #FFD700, #FDB931); order: 2; z-index: 2; }
+        .p-2 { height: 100px; background: linear-gradient(to bottom, #E0E0E0, #BDBDBD); order: 1; }
+        .p-3 { height: 70px;  background: linear-gradient(to bottom, #CD7F32, #A0522D); order: 3; }
+        
+        .p-name { font-size: 0.9rem; margin-bottom: 5px; font-weight: 700; color: var(--text-main); }
+        .p-score { font-size: 0.8rem; opacity: 0.9; }
+        .crown { font-size: 1.5rem; margin-bottom: 5px; }
+
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 12px; color: var(--text-light); font-size: 0.85rem; border-bottom: 2px solid #f3f4f6; }
+        td { padding: 12px; border-bottom: 1px solid #f3f4f6; font-size: 0.9rem; }
+
+        .transparency { text-align: center; font-size: 0.85rem; color: #6b7280; margin: 40px auto 20px auto; max-width: 800px; line-height: 1.6; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>Ayo Hitung Jejak Emisi Kamu! 🌍</h1>
+        <p>Emisi bukan hanya sekadar angka. Ia adalah konsekuensi dari tiap keputusan yang sering kita anggap sepele</p>
+        <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=800&q=80" alt="Bumi Hijau" class="hero-img">
+    </header>
+
+    <form id="carbonForm">
+
+        <section>
+            <h2>🚗 1. Kamu kesini naik apa?</h2>
+            <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=600&q=80" class="section-illu" alt="Transportasi">
+            
+            <div class="copywriting">
+                “Yuk jujur, tadi sampai sini pakai kendaraan apa? Tenang, gak ada polisi kok di sini, cuma ada emisi yang perlu dihitung😁.”
+            </div>
+            
+            <div id="transport-list"></div>
+            <button type="button" class="btn-add" onclick="addTransport()">+ Tambah Kendaraan</button>
+        </section>
+
+        <section>
+            <h2>🍽️ 2. Udah makan apa aja hari ini?</h2>
+            <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=600&q=80" class="section-illu" alt="Makanan">
+            
+            <div class="copywriting">
+                “Daging sapi emang enak, tapi emisinya juara satu. Kamu tim makan apa hari ini?”
+            </div>
+            <div id="food-list"></div>
+            <button type="button" class="btn-add" onclick="addFood()">+ Tambah Asupan</button>
+        </section>
+
+        <section>
+            <h2>⚡ 3. Kamu pasti pake gadget/elektronik kan? hehehe...</h2>
+            <img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=600&q=80" class="section-illu" alt="Energi">
+            
+            <div class="copywriting">
+                “Gadget nyala terus, AC dingin banget... Meteran listrik jalan, emisi PLTU juga ngebul lho.”
+            </div>
+            <div id="energy-list"></div>
+            <button type="button" class="btn-add" onclick="addEnergy()">+ Tambah Gadget</button>
+        </section>
+
+        <section>
+            <h2>🗑️ 4. Manusia emang doyan nyampah😓</h2>
+            <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=600&q=80" class="section-illu" alt="Sampah">
+
+            <div class="copywriting">
+                “Sampah fisik numpuk di TPA, sampah digital numpuk di server. Dua-duanya bikin bumi gerah.”
+            </div>
+
+            <div class="input-wrapper">
+                <label>Jujur, hari ini nyampah apa?</label>
+                <select id="wasteType">
+                    <option value="0">😇 Zero Waste (Hebat!)</option>
+                    <option value="2.5">🥤 Plastik (Botol/Kresek)</option>
+                    <option value="1.0">📦 Kertas/Kardus</option>
+                    <option value="1.9">🍌 Sisa Makanan (Organik)</option>
+                </select>
+                <div class="slider-container">
+                    <input type="range" id="wasteAmount" min="0" max="2" step="0.1" value="0.5" oninput="updateVal('wasteDisplay', this.value)">
+                    <span id="wasteDisplay" class="val-display">0.5</span> <span style="font-size:0.8rem">kg</span>
+                </div>
+            </div>
+
+            <div class="input-wrapper">
+                <label>Kalo "sampah digital"?</label>
+                <span class="helper-text">Server butuh listrik gede buat streaming drakor atau mabar.</span>
+                <select id="digitalType">
+                    <option value="0.15">🎬 Streaming Video (HD)</option>
+                    <option value="0.05">💼 Meeting Online</option>
+                    <option value="0.20">🎮 Gaming Online</option>
+                    <option value="0.01">📱 Scroll Sosmed Ringan</option>
+                </select>
+                <div class="slider-container">
+                    <input type="range" id="digitalDuration" min="0" max="12" step="0.5" value="2" oninput="updateVal('digitalDisplay', this.value)">
+                    <span id="digitalDisplay" class="val-display">2</span> <span style="font-size:0.8rem">jam</span>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>🌱 5. Kegiatan "zero emission" apa yang kamu lakukan hari ini?</h2>
+            <div class="copywriting">
+                “Ada hal baik yang kamu lakuin hari ini? Lumayan buat ngurangin skor dosa emisimu.”
+            </div>
+            <div style="display: grid; gap: 10px;">
+                <label style="font-weight:400; cursor:pointer;"><input type="checkbox" class="offset-check" value="0.5"> 🚶 Jalan kaki / Gowes jarak dekat</label>
+                <label style="font-weight:400; cursor:pointer;"><input type="checkbox" class="offset-check" value="0.3"> 🥤 Bawa tumbler sendiri</label>
+                <label style="font-weight:400; cursor:pointer;"><input type="checkbox" class="offset-check" value="0.4"> 🍽️ Habisin makanan (No Food Waste)</label>
+                <label style="font-weight:400; cursor:pointer;"><input type="checkbox" class="offset-check" value="0.2"> 💡 Matikan lampu gak kepakai</label>
+            </div>
+        </section>
+
+        <section class="identity-box">
+            <h2>👤 Eh kenalan dulu dong!</h2>
+            <div style="margin: 20px 0;">
+                <label style="color:#d1d5db;">Nama Panggilan Kerenmu</label>
+                <input type="text" id="userName" placeholder="Ketik nama biar masuk podium..." required>
+            </div>
+            <button type="button" class="btn-calculate" onclick="calculate()">🚀 HITUNG JEJAK EMISI SAYA!</button>
+        </section>
+
+    </form>
+
+    <div id="result-section">
+        
+        <section class="result-highlight">
+            <h2>📊 Rapor Emisi Kamu</h2>
+            <p style="color: #666; margin-bottom: 10px;">Total Jejak Karbon Hari Ini:</p>
+            <div class="emission-big"><span id="totalDaily">0</span> <span style="font-size:1.5rem">kg</span></div>
+            
+            <div style="background: #ecfdf5; display:inline-block; padding: 10px 20px; border-radius: 50px; margin: 15px 0; color: var(--primary-dark); font-weight:bold;">
+                🌳 Jika kamu mengeluarkan emisi sebanyak itu selama setahun, maka kamu harus menanam <span id="treeCount">0</span> pohon/tahun
+            </div>
+        </section>
+
+        <section>
+            <h2>🌍 Emisi Kamu vs Dunia</h2>
+            <div class="copywriting">
+                “Kalau kamu hidup kayak gini terus selama 1 tahun, segini lho perbandinganmu sama rata-rata orang lain di dunia.”
+            </div>
+
+            <div class="comparison-container">
+
+                <div class="comp-row">
+                    <div class="comp-label">KAMU 🫵</div>
+                    <div class="comp-bar-area">
+                        <div class="comp-bar bar-user" id="barUser" style="width: 0%"></div>
+                    </div>
+                    <div class="comp-value" id="userEmissionText">0 tonCO₂e/tahun</div>
+                </div>
+
+                <div class="comp-row">
+                    <div class="comp-label">Indonesia 🇮🇩</div>
+                    <div class="comp-bar-area">
+                        <div class="comp-bar bar-indo" style="width:36%"></div>
+                    </div>
+                    <div class="comp-value">3.6 tonCO₂e/tahun/kapita</div>
+                </div>
+
+                <div class="comp-row">
+                    <div class="comp-label">ASEAN 🌏</div>
+                    <div class="comp-bar-area">
+                        <div class="comp-bar bar-ASEAN" style="width:78%"></div>
+                    </div>
+                    <div class="comp-value">7.8 tonCO₂e/tahun/kapita</div>
+                </div>
+
+                <div class="comp-row">
+                    <div class="comp-label">Global 🌍</div>
+                    <div class="comp-bar-area">
+                        <div class="comp-bar bar-global" style="width:63%"></div>
+                    </div>
+                    <div class="comp-value">6.3 tonCO₂e/tahun/kapita</div>
+                </div>
+
+            </div>
+
+            <p class="data-source">
+                *Data referensi: Our World in Data & EDGAR database.
+            </p>
+        </section>
+
+        <section style="border-bottom-color: var(--accent);">
+            <h2>💼 Produk Kredit Karbon</h2>
+            
+            <div class="market-intro" style="background: #fff7ed; padding: 20px; border-radius:12px; margin-bottom: 20px;">
+                <p><strong>Proyeksi Tahunan:</strong> Gaya hidupmu menghasilkan <strong><span id="totalYearly">0</span> tonCO₂e/tahun</strong>.</p>
+                <p style="margin-top:10px;">Capek nanem pohon sendiri? Di pasar karbon, kamu bisa beli kredit karbon. Ini opsinya:</p>
+            </div>
+
+            <div class="market-grid">
+                <div class="product-card">
+                    <span style="position:absolute; top:10px; right:10px; font-size:1.5rem;">🛡️</span>
+                    <h4 style="font-weight:800; color: #f59e0b;">REDD+</h4>
+                    <p style="font-size:0.8rem; color:#666;">Reducing Emissions from Deforestation and Forest Degradation</p>
+                    <div class="price-display">$<span id="costRedd">0</span></div>
+                    <p style="font-size:0.75rem;">($7.00 / tonCO₂e)</p>
+                    <button class="btn-buy bg-redd" onclick="buyCredit('REDD+')">Pilih Produk</button>
+                </div>
+
+                <div class="product-card">
+                    <span style="position:absolute; top:10px; right:10px; font-size:1.5rem;">🌲</span>
+                    <h4 style="font-weight:800; color: #3b82f6;">IFM</h4>
+                    <p style="font-size:0.8rem; color:#666;">Improved Forest Management</p>
+                    <div class="price-display">$<span id="costIfm">0</span></div>
+                    <p style="font-size:0.75rem;">($16.00 / tonCO₂e)</p>
+                    <button class="btn-buy bg-ifm" onclick="buyCredit('IFM')">Pilih Produk</button>
+                </div>
+
+                <div class="product-card">
+                    <span style="position:absolute; top:10px; right:10px; font-size:1.5rem;">🌱</span>
+                    <h4 style="font-weight:800; color: #10b981;">ARR</h4>
+                    <p style="font-size:0.8rem; color:#666;">Afforestation, Reforestation, and Revegetation</p>
+                    <div class="price-display">$<span id="costArr">0</span></div>
+                    <p style="font-size:0.75rem;">($24.00 / tonCO₂e)</p>
+                    <button class="btn-buy bg-arr" onclick="buyCredit('ARR')">Pilih Produk</button>
+                </div>
+            </div>
+
+            <div style="margin-top: 40px; border-top: 1px dashed #ccc; padding-top:20px;">
+                <h3>🌳 Skema Kredit Karbon</h3>
+                
+                <div class="edu-grid">
+                    <div class="edu-card redd">
+                        <h4>REDD+ <span class="edu-badge">Jaga Hutan</span></h4>
+                        <p class="edu-desc">Melindungi hutan alam yang masih utuh agar tidak ditebang/dikonversi.</p>
+                        
+                        <div class="edu-btns">
+                            <button type="button" class="btn-edu-toggle btn-pros" onclick="toggleInfo('pros-redd')">👍 Kelebihan</button>
+                            <button type="button" class="btn-edu-toggle btn-cons" onclick="toggleInfo('cons-redd')">⚠️ Kekurangan</button>
+                        </div>
+                        
+                        <div id="pros-redd" class="edu-content content-pros">
+                            <strong>✅ Kelebihan (Advantages):</strong>
+                            <ul>
+                                <li><strong>Dampak Cepat:</strong> Langsung mencegah emisi dalam jumlah besar karena pohon tua menyimpan karbon sangat banyak.</li>
+                                <li><strong>Biaya Rendah:</strong> Lebih murah ($5-$10) dibanding menanam baru karena tidak perlu biaya bibit/tanam.</li>
+                                <li><strong>Biodiversitas:</strong> Menjaga habitat asli satwa liar (harimau, orangutan) yang sudah ada.</li>
+                            </ul>
+                        </div>
+
+                        <div id="cons-redd" class="edu-content content-cons">
+                            <strong>⚠️ Kekurangan (Challenges):</strong>
+                            <ul>
+                                <li><strong>Kebocoran (Leakage):</strong> Penebang liar mungkin hanya pindah ke hutan sebelah yang tidak dijaga.</li>
+                                <li><strong>Additionality:</strong> Sulit membuktikan apakah hutan itu "benar-benar akan ditebang" jika proyek tidak ada.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="edu-card ifm">
+                        <h4>IFM <span class="edu-badge">Rawat Hutan</span></h4>
+                        <p class="edu-desc">Manajemen hutan produksi yang lebih baik (tebang pilih, rotasi panjang).</p>
+                        
+                        <div class="edu-btns">
+                            <button type="button" class="btn-edu-toggle btn-pros" onclick="toggleInfo('pros-ifm')">👍 Kelebihan</button>
+                            <button type="button" class="btn-edu-toggle btn-cons" onclick="toggleInfo('cons-ifm')">⚠️ Kekurangan</button>
+                        </div>
+
+                        <div id="pros-ifm" class="edu-content content-pros">
+                            <strong>✅ Kelebihan (Advantages):</strong>
+                            <ul>
+                                <li><strong>Win-Win Solution:</strong> Tetap menghasilkan kayu untuk ekonomi, tapi stok karbon hutan meningkat.</li>
+                                <li><strong>Kualitas Kayu:</strong> Membiarkan pohon tumbuh lebih lama menghasilkan kayu yang lebih keras dan mahal.</li>
+                                <li><strong>Jangka Panjang:</strong> Menciptakan lapangan kerja kehutanan yang berkelanjutan.</li>
+                            </ul>
+                        </div>
+
+                        <div id="cons-ifm" class="edu-content content-cons">
+                            <strong>⚠️ Kekurangan (Challenges):</strong>
+                            <ul>
+                                <li><strong>Monitoring Rumit:</strong> Perlu sensus pohon yang sangat detail dan rutin untuk menghitung pertambahan karbon.</li>
+                                <li><strong>Pasar Kayu:</strong> Jika permintaan kayu tinggi, menahan penebangan bisa jadi tantangan ekonomi berat.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="edu-card arr">
+                        <h4>ARR <span class="edu-badge">Tanam Baru</span></h4>
+                        <p class="edu-desc">Menanam pohon di lahan gundul/kritis (Reboisasi).</p>
+                        
+                        <div class="edu-btns">
+                            <button type="button" class="btn-edu-toggle btn-pros" onclick="toggleInfo('pros-arr')">👍 Kelebihan</button>
+                            <button type="button" class="btn-edu-toggle btn-cons" onclick="toggleInfo('cons-arr')">⚠️ Kekurangan</button>
+                        </div>
+
+                        <div id="pros-arr" class="edu-content content-pros">
+                            <strong>✅ Kelebihan (Advantages):</strong>
+                            <ul>
+                                <li><strong>Karbon Removal:</strong> Benar-benar menyedot CO2 dari udara, bukan sekadar mencegah emisi.</li>
+                                <li><strong>Mudah Diukur:</strong> Sangat jelas (dari 0 pohon menjadi ada pohon), hitungannya paling akurat.</li>
+                                <li><strong>Pemulihan Lahan:</strong> Memperbaiki tanah tandus, mencegah longsor, dan menahan air tanah.</li>
+                            </ul>
+                        </div>
+
+                        <div id="cons-arr" class="edu-content content-cons">
+                            <strong>⚠️ Kekurangan (Challenges):</strong>
+                            <ul>
+                                <li><strong>Biaya Mahal:</strong> Butuh bibit, pupuk, dan perawatan intensif ($20+).</li>
+                                <li><strong>Waktu Lama:</strong> Pohon baru butuh 5-10 tahun untuk mulai menyerap karbon secara signifikan.</li>
+                                <li><strong>Permanensi:</strong> Risiko tinggi bibit mati, kebakaran, atau gagal tumbuh di awal.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section style="border-bottom-color: #3b82f6;">
+            <h2>🏆 Low Carbon Champion</h2>
+            <div class="copywriting">"Siapa nih yang gaya hidupnya paling santuy sama bumi?"</div>
+            
+            <div class="podium-container" id="podiumArea"></div>
+
+            <table id="leaderboardTable">
+                <tbody></tbody>
+            </table>
+            
+            <button onclick="location.reload()" style="background:transparent; border:1px solid #ccc; padding:12px; width:100%; margin-top:20px; cursor:pointer; border-radius:8px; color:#666;">🔄 Hitung Ulang (Refresh)</button>
+        </section>
+
+    </div>
+
+</div>
+    <div class="transparency">
+        Perhitungan ini bersifat estimasi untuk kepentingan edukasi dan peningkatan kesadaran akan dampak lingkungan. Faktor emisi diambil dari sumber seperti IPCC, ISO 14064, dan Our World in Data.
+        <br>🚀Dibuat oleh: Yadi Apriadi (11522032)😊
+    </div>
+
+<script>
+    /* --- 0. UI INTERACTION (NEW: TOGGLE 2 BUTTONS) --- */
+    function toggleInfo(id) {
+        const el = document.getElementById(id);
+        
+        // Simple toggle logic
+        if (el.style.display === 'block') {
+            el.style.display = 'none';
+        } else {
+            el.style.display = 'block';
+        }
+    }
+
+    /* --- 1. DATA REFERENSI --- */
+    const factors = {
+        transport: { mobil: 0.21, motor: 0.10, bus: 0.05, krl: 0.03, ojol: 0.10 },
+        food: { daging: 0.027, ayam: 0.006, nabati: 0.002, snack: 0.003 },
+        energy: { hp: 0.01, laptop: 0.05, ac: 0.80, lampu: 0.02 }, 
+        grid: 0.85
+    };
+
+    let yearlyTonGlobal = 0;
+
+    /* --- 2. UI BUILDERS --- */
+    function addTransport() {
+        const id = Date.now();
+        const html = `
+            <div class="input-wrapper" id="t-${id}">
+                <button type="button" class="btn-remove" onclick="removeEl('t-${id}')">Hapus</button>
+                <label>Pilih Kendaraan & Jarak (KM)</label>
+                <div style="display:flex; gap:10px;">
+                    <select class="trans-type">
+                        <option value="mobil">Mobil Pribadi</option>
+                        <option value="motor">Motor Pribadi</option>
+                        <option value="ojol">Ojek Online</option>
+                        <option value="bus">Bus / Angkot</option>
+                        <option value="krl">KRL / MRT</option>
+                    </select>
+                    <input type="number" class="trans-dist" placeholder="0 km">
+                </div>
+            </div>`;
+        document.getElementById('transport-list').insertAdjacentHTML('beforeend', html);
+    }
+
+    function addFood() {
+        const id = Date.now();
+        const html = `
+            <div class="input-wrapper" id="f-${id}">
+                <button type="button" class="btn-remove" onclick="removeEl('f-${id}')">Hapus</button>
+                <label>Menu & Berat (Gram)</label>
+                <div style="display:flex; gap:10px;">
+                    <select class="food-type">
+                        <option value="daging">Nasi + Sapi/Kambing</option>
+                        <option value="ayam">Nasi + Ayam/Unggas</option>
+                        <option value="nabati">Vegetarian/Tahu/Tempe</option>
+                        <option value="snack">Roti/Mie/Camilan</option>
+                    </select>
+                    <input type="number" class="food-gram" placeholder="Gram">
+                </div>
+            </div>`;
+        document.getElementById('food-list').insertAdjacentHTML('beforeend', html);
+    }
+
+    function addEnergy() {
+        const id = Date.now();
+        const html = `
+            <div class="input-wrapper" id="e-${id}">
+                <button type="button" class="btn-remove" onclick="removeEl('e-${id}')">Hapus</button>
+                <label>Gadget & Durasi (Jam)</label>
+                <div style="display:flex; gap:10px;">
+                    <select class="energy-device">
+                        <option value="hp">Handphone</option>
+                        <option value="laptop">Laptop/PC</option>
+                        <option value="ac">AC Ruangan</option>
+                        <option value="lampu">Lampu Kamar</option>
+                    </select>
+                    <input type="number" class="energy-hour" placeholder="Jam">
+                </div>
+            </div>`;
+        document.getElementById('energy-list').insertAdjacentHTML('beforeend', html);
+    }
+
+    function removeEl(id) { document.getElementById(id).remove(); }
+    function updateVal(id, val) { document.getElementById(id).innerText = val; }
+
+    window.onload = () => { 
+        addTransport(); 
+        addFood(); 
+        addEnergy(); 
+        loadLeaderboard(); 
+    };
+
+    /* --- 3. CALCULATION --- */
+    function calculate() {
+        const name = document.getElementById('userName').value.trim();
+        if(!name) { alert("Isi nama dulu ya!"); return; }
+
+        let dailyTotal = 0;
+
+        // Transport
+        document.querySelectorAll('#transport-list .input-wrapper').forEach(el => {
+            const type = el.querySelector('.trans-type').value;
+            const km = parseFloat(el.querySelector('.trans-dist').value) || 0;
+            dailyTotal += (factors.transport[type] * km);
+        });
+
+        // Food
+        document.querySelectorAll('#food-list .input-wrapper').forEach(el => {
+            const type = el.querySelector('.food-type').value;
+            const gram = parseFloat(el.querySelector('.food-gram').value) || 0;
+            dailyTotal += (factors.food[type] * gram);
+        });
+
+        // Energy
+        document.querySelectorAll('#energy-list .input-wrapper').forEach(el => {
+            const dev = el.querySelector('.energy-device').value;
+            const hr = parseFloat(el.querySelector('.energy-hour').value) || 0;
+            dailyTotal += (factors.energy[dev] * hr * factors.grid);
+        });
+
+        // Waste & Digital
+        const wasteKg = parseFloat(document.getElementById('wasteAmount').value);
+        const wasteFactor = parseFloat(document.getElementById('wasteType').value);
+        dailyTotal += (wasteKg * wasteFactor);
+
+        const digiHr = parseFloat(document.getElementById('digitalDuration').value);
+        const digiFactor = parseFloat(document.getElementById('digitalType').value);
+        dailyTotal += (digiHr * digiFactor);
+
+        // Offsets
+        let offsetVal = 0;
+        document.querySelectorAll('.offset-check:checked').forEach(el => {
+            offsetVal += parseFloat(el.value);
+        });
+        
+        dailyTotal = Math.max(0, dailyTotal - offsetVal);
+
+        // Final
+        const dailyFinal = dailyTotal.toFixed(2);
+        const yearlyTon = ((dailyTotal * 365) / 1000).toFixed(2);
+        yearlyTonGlobal = yearlyTon;
+        const treesNeeded = Math.ceil((dailyTotal * 365) / 20);
+
+        // UI Updates
+        document.getElementById('totalDaily').innerText = dailyFinal;
+        document.getElementById('treeCount').innerText = treesNeeded;
+        document.getElementById('totalYearly').innerText = yearlyTon;
+
+        document.getElementById('costRedd').innerText = (yearlyTon * 7).toFixed(2);
+        document.getElementById('costIfm').innerText = (yearlyTon * 16).toFixed(2);
+        document.getElementById('costArr').innerText = (yearlyTon * 24).toFixed(2);
+
+        updateComparison(yearlyTon);
+
+        document.getElementById('result-section').style.display = 'block';
+        document.getElementById('result-section').scrollIntoView({behavior:'smooth'});
+        
+        saveLeaderboard(name, parseFloat(dailyFinal));
+    }
+
+    function updateComparison(userTon) {
+        const maxScale = 10; 
+        let userPct = (userTon / maxScale) * 100;
+        if(userPct > 100) userPct = 100;
+        
+        // Update Bar Width & Color
+        const barUser = document.getElementById('barUser');
+        barUser.style.width = userPct + "%";
+        
+        if(userTon < 3) { barUser.style.backgroundColor = "#10b981"; } 
+        else if(userTon > 6) { barUser.style.backgroundColor = "#ef4444"; }
+        else { barUser.style.backgroundColor = "#f59e0b"; }
+
+        // Update Text UNDER Bar
+        const textEl = document.getElementById('userEmissionText');
+        textEl.innerText = userTon + " tonCO₂e/tahun";
+    }
+
+    function buyCredit(type) {
+        let price = type === 'REDD+' ? 7 : type === 'IFM' ? 16 : 24;
+        let total = (yearlyTonGlobal * price).toFixed(2);
+        alert(`🎉 Mantap! \n\nKamu membeli kredit ${type} seharga $${total}.`);
+    }
+
+    /* --- 4. LEADERBOARD --- */
+    function saveLeaderboard(name, score) {
+        let db = JSON.parse(localStorage.getItem('carbonDB_v2')) || [];
+        db.push({ name, score });
+        localStorage.setItem('carbonDB_v2', JSON.stringify(db));
+        renderLeaderboard();
+    }
+
+    function loadLeaderboard() {
+        let db = JSON.parse(localStorage.getItem('carbonDB_v2'));
+            localStorage.setItem('carbonDB_v2', JSON.stringify(db));
+        }
+        renderLeaderboard();
+
+    function renderLeaderboard() {
+        let db = JSON.parse(localStorage.getItem('carbonDB_v2')) || [];
+        db.sort((a,b) => a.score - b.score);
+
+        const podiumArea = document.getElementById('podiumArea');
+        const tbody = document.querySelector('#leaderboardTable tbody');
+        
+        podiumArea.innerHTML = '';
+        tbody.innerHTML = '';
+
+        const top3 = db.slice(0, 3);
+        const rest = db.slice(3);
+
+        let podiumHTML = '';
+        
+        if(top3[1]) {
+            podiumHTML += `
+            <div class="podium-item p-2">
+                <div class="p-name">${top3[1].name}</div>
+                <div class="podium-block">
+                    <div class="crown">🥈</div>
+                    <div class="p-score">${top3[1].score} kg</div>
+                </div>
+            </div>`;
+        }
+        if(top3[0]) {
+            podiumHTML += `
+            <div class="podium-item p-1">
+                <div class="p-name">${top3[0].name}</div>
+                <div class="podium-block">
+                    <div class="crown">👑</div>
+                    <div class="p-score">${top3[0].score} kg</div>
+                </div>
+            </div>`;
+        }
+        if(top3[2]) {
+            podiumHTML += `
+            <div class="podium-item p-3">
+                <div class="p-name">${top3[2].name}</div>
+                <div class="podium-block">
+                    <div class="crown">🥉</div>
+                    <div class="p-score">${top3[2].score} kg</div>
+                </div>
+            </div>`;
+        }
+
+        podiumArea.innerHTML = podiumHTML;
+
+        rest.forEach((item, index) => {
+            const row = `
+                <tr>
+                    <td style="width:10%; font-weight:bold; color:#888;">#${index+4}</td>
+                    <td>${item.name}</td>
+                    <td style="font-weight:bold;">${item.score} kg</td>
+                </tr>
+            `;
+            tbody.innerHTML += row;
+        });
+    }
+</script>
+
+</body>
+</html>
