@@ -76,12 +76,12 @@
         section {
             background: var(--card-bg);
             border-radius: var(--radius);
-            padding: 30px;
-            margin-bottom: 30px;
+            padding: 36px;            /* ⬅️ dari 30px */
+            margin-bottom: 36px;      /* ⬅️ lebih konsisten */
             box-shadow: var(--shadow);
             border-bottom: 4px solid var(--primary);
-            position: relative;
-            transition: transform 0.2s;
+        }
+
         }
         section:hover { transform: translateY(-2px); }
         
@@ -100,33 +100,51 @@
             font-size: 0.95rem;
             background: #ecfdf5;
             color: #065f46;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            font-style: italic;
-            border-left: 4px solid var(--primary);
+            padding: 18px;
+            border-radius: 14px;
+            margin-bottom: 26px;
+            line-height: 1.7;
+        }
+
         }
 
         /* --- 4. FORM ELEMENTS --- */
         .input-wrapper {
             background: #f9fafb;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 14px;
+            margin-bottom: 28px; /* ⬅️ JARAK ANTAR PERTANYAAN */
             border: 1px solid #e5e7eb;
         }
-        
+        .input-wrapper > div {
+            margin-top: 12px;
+        }
+
         #transport-list,
         #food-list,
         #energy-list {
             display: grid;
-            gap: 18px;
-            margin-bottom: 24px;
+            gap: 28px;        /* ⬅️ lebih longgar */
+            margin-bottom: 32px;
         }
 
+
         
-        label { display: block; font-weight: 700; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-main); }
-        .helper-text { font-size: 0.8rem; color: #6b7280; display: block; margin-top: -5px; margin-bottom: 10px; }
+        label {
+            display: block;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 10px; /* ⬅️ ditambah */
+            color: var(--text-main);
+        }
+
+        .helper-text {
+            font-size: 0.8rem;
+            color: #6b7280;
+            display: block;
+            margin-bottom: 14px; /* ⬅️ sebelumnya terlalu sempit */
+        }
+
         
         select, input[type="number"], input[type="text"] {
             width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-family: inherit; margin-bottom: 5px; outline: none; background: white;
@@ -213,7 +231,20 @@
             background: white;
             transition: 0.2s;
         }
+
+        .checkbox-group {
+            display: grid;
+            gap: 16px;        /* ⬅️ lebih nyaman */
+            margin-top: 10px;
+        }
         
+        .checkbox-group label {
+            background: #f9fafb;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+        }
+
         /* Pros Button */
         .btn-pros { border-color: #10b981; color: #047857; }
         .btn-pros:hover { background: #ecfdf5; }
@@ -368,14 +399,13 @@
             <div class="copywriting">
                 “Ada hal baik yang kamu lakuin hari ini? Lumayan buat ngurangin skor dosa emisimu.”
             </div>
-            <div style="display: grid; gap: 10px;">
+            <div class="checkbox-group">
                 <label style="font-weight:400; cursor:pointer;"><input type="checkbox" class="offset-check" value="0.5"> 🚶 Jalan kaki / Gowes jarak dekat</label>
                 <label style="font-weight:400; cursor:pointer;"><input type="checkbox" class="offset-check" value="0.3"> 🥤 Bawa tumbler sendiri</label>
                 <label style="font-weight:400; cursor:pointer;"><input type="checkbox" class="offset-check" value="0.4"> 🍽️ Habisin makanan (No Food Waste)</label>
                 <label style="font-weight:400; cursor:pointer;"><input type="checkbox" class="offset-check" value="0.2"> 💡 Matikan lampu gak kepakai</label>
             </div>
         </section>
-
         <section class="identity-box">
             <h2>👤 Eh sebelum lanjut, kenalan dulu dong!</h2>
             <div style="margin: 20px 0;">
@@ -855,6 +885,7 @@
 </body>
 
 </html>
+
 
 
 
